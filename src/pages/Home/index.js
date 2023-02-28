@@ -3,7 +3,7 @@ import './home.css';
 import { auth } from '../../firebaseConnection';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-
+import Swal  from 'sweetalert2';
 import { Link } from 'react-router-dom';
 
 export default function Home(){
@@ -18,14 +18,33 @@ export default function Home(){
       
       await signInWithEmailAndPassword(auth, email, password)
       .then(() => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Login realizado com sucesso!',
+          showConfirmButton: false,
+          timer: 2500
+        })
         navigate('/admin', { replace: true })
       })
       .catch(() => {
-        console.log('ERRO AO FAZER O LOGIN')
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'Email ou senha incorretos ou não possui cadastro!',
+          showConfirmButton: false,
+          timer: 2000
+        })
       })
 
     }else{
-      alert('Preencha todos os campos!');
+      Swal.fire({
+        position: 'top',
+        icon: 'warning',
+        title: 'Preencha todos os campos!',
+        showConfirmButton: true,
+        timer: 2500
+      })
     }
   }
 

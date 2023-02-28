@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConnection";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"
+ 
 
 export default function Register(){
   const [email, setEmail] = useState('');
@@ -16,14 +18,33 @@ export default function Register(){
       
       await createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Cadastro realizado com sucesso!',
+          showConfirmButton: true,
+          timer: 2500,
+        })
         navigate('/admin', { replace: true })
       })
       .catch(() => {
-        console.log('ERRO AO FAZER O CADASTRO')
+        Swal.fire({
+          position: 'top',
+          icon: 'Error',
+          title: 'Erro ao fazer cadastro, verifique seu email e sua senha.',
+          showConfirmButton: true,
+          timer: 3000,
+        })
       })
 
     }else{
-      alert('Preencha todos os campos!');
+      Swal.fire({
+        position: 'top',
+        icon: 'warning',
+        title: 'Preencha todos os campos!',
+        showConfirmButton: true,
+        timer: 2500,
+      })
     }
   }
 
